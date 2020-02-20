@@ -1,0 +1,2381 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="10/8/2014 3:26:43 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ZENSQLDEV01"
+  DTS:CreatorName="AWGPLC\dsharma"
+  DTS:DTSID="{0281E727-18F5-4802-AC2A-77F9F957FB28}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="14.0.3026.27"
+  DTS:LocaleID="2057"
+  DTS:ObjectName="SP_WM_PDF_TRANSFER"
+  DTS:PackageType="5"
+  DTS:VersionBuild="18"
+  DTS:VersionComments="Migrate to SSIS 2012"
+  DTS:VersionGUID="{24A743B4-FEAD-4E58-8255-60086F735F62}"
+  DTS:VersionMajor="2">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[RJ]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{05F262A3-7BEC-47E7-B71F-72487B099187}"
+      DTS:ObjectName="RJ">
+      <DTS:PropertyExpression
+        DTS:Name="InitialCatalog">@[$Package::Database]</DTS:PropertyExpression>
+      <DTS:PropertyExpression
+        DTS:Name="ServerName">@[$Package::Server]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=MUSDAT-DVW-DB01;Initial Catalog=RJ_SP_TRANSFER;Provider=SQLOLEDB.1;Integrated Security=SSPI;Auto Translate=False;Application Name=SSIS-SP_WM_PDF_TRANSFER-{05F262A3-7BEC-47E7-B71F-72487B099187}RJ;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[RJATTACHMENTSOQL]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{BEB20894-94B4-45D7-A153-5646A08B2151}"
+      DTS:ObjectName="RJATTACHMENTSOQL">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[$Package::FilePath] + @[$Package::FileName]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="2057"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="E:\RelationalJunction\1000\rj4salesforce\sql\ATTACHMENT.SP_WM_PDF_TRANSFER.soql">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:DataType="302"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Column 0"
+              DTS:DTSID="{EF21A0B4-58DE-420E-9389-9AAE8850F000}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[SMTP]"
+      DTS:CreationName="SMTP"
+      DTS:DTSID="{36182ED3-B089-442A-AAC6-05DBE5A3073E}"
+      DTS:ObjectName="SMTP">
+      <DTS:ObjectData>
+        <SmtpConnectionManager
+          ConnectionString="SmtpServer=email.morrisonus.com;UseWindowsAuthentication=False;EnableSsl=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:LogProviders>
+    <DTS:LogProvider
+      DTS:ConfigString="RJ"
+      DTS:CreationName="Microsoft.LogProviderSQLServer"
+      DTS:Description="Writes log entries for events to a SQL Server database"
+      DTS:DTSID="{BCCB3B40-E58B-4A83-A4AA-9C5D1F254174}"
+      DTS:ObjectName="SSIS log provider for SQL Server">
+      <DTS:ObjectData>
+        <InnerObject />
+      </DTS:ObjectData>
+    </DTS:LogProvider>
+  </DTS:LogProviders>
+  <DTS:PackageParameters>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{F65C9650-1E5E-4733-BCC6-46AC48697323}"
+      DTS:ObjectName="Database"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">RJ_SP_TRANSFER</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{6B39213F-08D9-4FA2-92FF-FB42046DDCAA}"
+      DTS:ObjectName="EmailBCC"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">paul.warnes@morrisonus.com</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{EE633DFA-C97E-4F4F-A096-036659986C05}"
+      DTS:ObjectName="EmailFrom"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">SP_WM_PDF_TRANSFER@morrisonus.com</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{771C7948-7CCE-48D2-8932-1B955FA47491}"
+      DTS:ObjectName="EmailSubject"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">Scottish Power Work Mobile PDF transfer import results (DO NOT REPLY)</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{C80D9C04-5B20-4A91-A764-6926C0353A06}"
+      DTS:ObjectName="EmailTo"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">paul.warnes@morrisonus.com</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{F99C1DB1-472A-4F4E-8C84-A117766B594D}"
+      DTS:ObjectName="ErrorEmailBody"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">Please call the IT helpdesk on 0870 606 5717 and log this error along with the name of the routine which has failed. </DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{4E1B43A5-4E66-4045-A090-E5B2CB370B39}"
+      DTS:ObjectName="ErrorEmailMUSTo"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">paul.warnes@morrisonus.com</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{B6513BF4-F513-4DB0-A2EF-3DF55B85D910}"
+      DTS:ObjectName="ErrorEmailSubject"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">An error has occurred during the execution of this routine for transferring WM Scottish Power PDF files to Bellshill Server location</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{EC1A9EF9-1AE7-40C2-A48C-F66891E2C45F}"
+      DTS:ObjectName="ErrorEmailZensarTo"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue"> paul.warnes@morrisonus.com</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{0D7BF037-2D5A-4039-B018-2FBF91857398}"
+      DTS:ObjectName="FileName"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">ATTACHMENT.SP_WM_PDF_TRANSFER.soql</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{A42768BE-758A-4652-8865-A00AF6BDB344}"
+      DTS:ObjectName="FilePath"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">E:\RelationalJunction\1000\rj4salesforce\sql\</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{7F841E4C-9E37-49C5-9AF6-0F95CCF749FE}"
+      DTS:ObjectName="FilePathStub"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">E:\ImportRoutineFiles\SP_WM_PDF\</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{4BF686E8-49DF-4080-ACCB-48AE972D698E}"
+      DTS:ObjectName="ImportHoldingTable"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">HoldingTable_WI</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{29DF1C38-5248-48B1-B3AC-82B184FC75C3}"
+      DTS:ObjectName="RJExecutable"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">E:\RelationalJunction\public\bin\rj4salesforce.bat</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{35487485-F2C8-49D5-BD1E-62C9501E0B97}"
+      DTS:ObjectName="RJPath"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">E:\RelationalJunction\public\bin</DTS:Property>
+    </DTS:PackageParameter>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{1438D875-0E90-49B5-B797-8512ECD00F1D}"
+      DTS:ObjectName="Server"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">MUSDAT-DVW-DB01</DTS:Property>
+    </DTS:PackageParameter>
+  </DTS:PackageParameters>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{05393BE7-B70B-497A-8BB5-194BCC2F3770}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="BodyDetails">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C616FD41-9A26-448E-961F-E1F38D3687A0}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="EmailBody">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{393A7D8E-6BB0-4822-BA97-59FB8DC10027}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="EmailDetails">
+      <DTS:VariableValue
+        DTS:DataSubType="ManagedSerializable"
+        DTS:DataType="13">
+        <SOAP-ENV:Envelope xmlns:clr="http://schemas.microsoft.com/soap/encoding/clr/1.0" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+          <SOAP-ENV:Body>
+            <xsd:anyType
+              id="ref-1"></xsd:anyType>
+          </SOAP-ENV:Body>
+        </SOAP-ENV:Envelope>
+      </DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{5F4AB5CD-CD81-4C57-9A3D-02507EED6C55}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ErrorEmailBody">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{515908D0-090A-4268-B12B-44A6F7229670}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="ErrorState">
+      <DTS:VariableValue
+        DTS:DataType="17">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1891B62C-D016-4F3F-91C5-8963E7523535}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="FolderName">
+      <DTS:VariableValue
+        DTS:DataType="8">C:\Users\dsharma\Desktop\SP\</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{74A774B5-402C-435D-BA92-B2BBD2005F27}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="FolderTable">
+      <DTS:VariableValue
+        DTS:DataSubType="ManagedSerializable"
+        DTS:DataType="13">
+        <SOAP-ENV:Envelope xmlns:clr="http://schemas.microsoft.com/soap/encoding/clr/1.0" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+          <SOAP-ENV:Body>
+            <xsd:anyType
+              id="ref-1"></xsd:anyType>
+          </SOAP-ENV:Body>
+        </SOAP-ENV:Envelope>
+      </DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{5C70CF74-4E1F-4F6F-B0D2-F3A906C3FEEA}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="ReportError">
+      <DTS:VariableValue
+        DTS:DataType="17">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{D648FABE-4A57-4A1B-805B-FB9160CB96D7}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="RowsToProcess">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{3565AA19-856C-47BE-9199-C5008F797D49}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;SELECT '&quot; + @[$Package::FilePathStub]   +&quot;' +RIGHT(WORK_INSTRUCTION.NAMEX,6) + '\\'+&quot; + &quot; ATTACHMENT.NAMEX AS FULLPATHFILENAME, ATTACHMENT.BODYX&#xA;FROM  HoldingTable_WI    JOIN  MOBILE_WORKING ON HoldingTable_WI.ID = MOBILE_WORKING.ID&#xA;&#xA;JOIN  WORK_INSTRUCTION ON MOBILE_WORKING.WMS_REFERENCE = WORK_INSTRUCTION.ID&#xA;&#xA;JOIN  ATTACHMENT ON MOBILE_WORKING.ID = ATTACHMENT.PARENTID&#xA;&#xA;WHERE HoldingTable_WI.StatusCode = 20 AND MOBILE_WORKING.ID = '&quot; +  @[User::WM_ID] + &quot;'&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SQLToExecute">
+      <DTS:VariableValue
+        DTS:DataType="8">SELECT 'E:\ImportRoutineFiles\SP_WM_PDF\' +RIGHT(WORK_INSTRUCTION.NAMEX,6) + '\'+ ATTACHMENT.NAMEX AS FULLPATHFILENAME, ATTACHMENT.BODYX
+FROM  HoldingTable_WI    JOIN  MOBILE_WORKING ON HoldingTable_WI.ID = MOBILE_WORKING.ID
+
+JOIN  WORK_INSTRUCTION ON MOBILE_WORKING.WMS_REFERENCE = WORK_INSTRUCTION.ID
+
+JOIN  ATTACHMENT ON MOBILE_WORKING.ID = ATTACHMENT.PARENTID
+
+WHERE HoldingTable_WI.StatusCode = 20 AND MOBILE_WORKING.ID = ''</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{BFCE1E7A-ADC7-49F8-9490-DFA671EA71CD}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="WM_ID">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:LoggingOptions
+    DTS:FilterKind="0"
+    DTS:LoggingMode="1">
+    <DTS:Property
+      DTS:DataType="8"
+      DTS:Name="EventFilter">1,7,OnError</DTS:Property>
+    <DTS:Property
+      DTS:EventName="OnError"
+      DTS:Name="ColumnFilter">
+      <DTS:Property
+        DTS:Name="Computer">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="Operator">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceName">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="SourceID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="ExecutionID">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="MessageText">-1</DTS:Property>
+      <DTS:Property
+        DTS:Name="DataBytes">-1</DTS:Property>
+    </DTS:Property>
+    <DTS:SelectedLogProviders>
+      <DTS:SelectedLogProvider
+        DTS:InstanceID="{BCCB3B40-E58B-4A83-A4AA-9C5D1F254174}" />
+    </DTS:SelectedLogProviders>
+  </DTS:LoggingOptions>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Email Summary"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Email Summary"
+      DTS:DTSID="{D6BDC46F-D369-4A76-8428-C92814AFB2B2}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:FailPackageOnFailure="True"
+      DTS:FailParentOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Email Summary">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:DTSID="{CF952D1A-0E18-43FC-832D-F010EF16399B}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="User"
+          DTS:ObjectName="FilesToReportOn">
+          <DTS:VariableValue
+            DTS:DataType="3">0</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:LoggingOptions
+        DTS:FilterKind="0" />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Email Summary\Count valid rows"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DelayValidation="True"
+          DTS:Description="Count valid rows"
+          DTS:DTSID="{D2358199-2F1F-4CEF-BD5D-32DDF4F54728}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:FailParentOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Count valid rows"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{05F262A3-7BEC-47E7-B71F-72487B099187}"
+              SQLTask:SqlStatementSource="SELECT COUNT(*) from HoldingTable_WI WHERE StatusCode = 30"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::FilesToReportOn" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Email Summary\Iterate imported files"
+          DTS:CreationName="STOCK:FOREACHLOOP"
+          DTS:Description="Foreach Loop Container"
+          DTS:DTSID="{0C65CFF1-742B-4489-94AC-734B502C4FB2}"
+          DTS:ExecutableType="STOCK:FOREACHLOOP"
+          DTS:FailPackageOnFailure="True"
+          DTS:FailParentOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Iterate imported files">
+          <DTS:ForEachEnumerator
+            DTS:CreationName="Microsoft.ForEachADOEnumerator"
+            DTS:DTSID="{96D36171-F56A-4510-BBD1-30C6F733FE4F}"
+            DTS:ObjectName="{96D36171-F56A-4510-BBD1-30C6F733FE4F}">
+            <DTS:ObjectData>
+              <FEEADO
+                EnumType="EnumerateRowsInFirstTable"
+                VarName="User::EmailDetails" />
+            </DTS:ObjectData>
+          </DTS:ForEachEnumerator>
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:Executables>
+            <DTS:Executable
+              DTS:refId="Package\Email Summary\Iterate imported files\SetEmailBody"
+              DTS:CreationName="Microsoft.ExpressionTask"
+              DTS:Description="Expression Task"
+              DTS:DTSID="{784CDEA2-C55F-425F-BBB7-5BA79E40AB9C}"
+              DTS:ExecutableType="Microsoft.ExpressionTask"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="SetEmailBody"
+              DTS:TaskContact="Expression Task;Microsoft Corporation; SQL Server 2012; � 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+              DTS:ThreadHint="0">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <ExpressionTask
+                  Expression="@[User::EmailBody]= @[User::EmailBody]+ @[User::BodyDetails] + &quot;\n&quot;" />
+              </DTS:ObjectData>
+            </DTS:Executable>
+          </DTS:Executables>
+          <DTS:ForEachVariableMappings>
+            <DTS:ForEachVariableMapping
+              DTS:CreationName=""
+              DTS:DTSID="{1D04D011-BA60-445E-AE4D-D4DF011DD80A}"
+              DTS:ObjectName="{1D04D011-BA60-445E-AE4D-D4DF011DD80A}"
+              DTS:ValueIndex="0"
+              DTS:VariableName="User::BodyDetails" />
+          </DTS:ForEachVariableMappings>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Email Summary\Prepare Summary Records"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DelayValidation="True"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{C57BBDEA-EC16-4505-8D7D-33CF33D5B520}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:FailParentOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Prepare Summary Records"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{05F262A3-7BEC-47E7-B71F-72487B099187}"
+              SQLTask:SqlStatementSource="SELECT dbo.ImportProcessStatusCodes.StatusDesc +' - '+ ? +RIGHT(WORK_INSTRUCTION.NAMEX,6) + '\'+ ATTACHMENT.NAMEX AS FULLPATHFILENAME&#xA;FROM  HoldingTable_WI  &#xA;JOIN  MOBILE_WORKING ON HoldingTable_WI.ID = MOBILE_WORKING.ID&#xA;JOIN  WORK_INSTRUCTION ON MOBILE_WORKING.WMS_REFERENCE = WORK_INSTRUCTION.ID&#xA;JOIN  ATTACHMENT ON MOBILE_WORKING.ID = ATTACHMENT.PARENTID&#xA;JOIN  ImportProcessStatusCodes ON HoldingTable_WI.StatusCode = ImportProcessStatusCodes.StatusCode&#xA;WHERE HoldingTable_WI.StatusCode = 30&#xA;AND   ImportProcessStatusCodes.StatusCodeType = 'SP_WM_PDF'&#xA;ORDER BY 1"
+              SQLTask:ResultType="ResultSetType_Rowset" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::EmailDetails" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="$Package::FilePathStub"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="129"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Email Summary\SendNoFilesEmail"
+          DTS:CreationName="Microsoft.SendMailTask"
+          DTS:DelayValidation="True"
+          DTS:Description="SendNoFilesEmail"
+          DTS:DTSID="{3290BD95-1CF8-4E76-86AF-18941E1941CC}"
+          DTS:ExecutableType="Microsoft.SendMailTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:FailParentOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SendNoFilesEmail"
+          DTS:TaskContact="Send Mail Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:PropertyExpression
+            DTS:Name="BCCLine">@[$Package::EmailBCC]</DTS:PropertyExpression>
+          <DTS:PropertyExpression
+            DTS:Name="FromLine">@[$Package::EmailFrom]</DTS:PropertyExpression>
+          <DTS:PropertyExpression
+            DTS:Name="Subject">@[$Package::EmailSubject]</DTS:PropertyExpression>
+          <DTS:PropertyExpression
+            DTS:Name="ToLine">@[$Package::EmailTo]</DTS:PropertyExpression>
+          <DTS:ObjectData>
+            <SendMailTask:SendMailTaskData
+              SendMailTask:SMTPServer="{36182ED3-B089-442A-AAC6-05DBE5A3073E}"
+              SendMailTask:From="SP_WM_PDF_TRANSFER@morrisonus.com"
+              SendMailTask:To="paul.warnes@morrisonus.com"
+              SendMailTask:BCC="paul.warnes@morrisonus.com"
+              SendMailTask:Subject="Scottish Power Work Mobile PDF transfer import results (DO NOT REPLY)"
+              SendMailTask:MessageSource="The Scottish Power Work Mobile PDF transfer import routine has been run however no PDF files were found to process" xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Email Summary\SendPostProcessEmail"
+          DTS:CreationName="Microsoft.SendMailTask"
+          DTS:DelayValidation="True"
+          DTS:Description="SendPostProcessEmail"
+          DTS:DTSID="{7A127009-184D-4146-9D54-87103A00957F}"
+          DTS:ExecutableType="Microsoft.SendMailTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:FailParentOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SendPostProcessEmail"
+          DTS:TaskContact="Send Mail Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:PropertyExpression
+            DTS:Name="BCCLine">@[$Package::EmailBCC]</DTS:PropertyExpression>
+          <DTS:PropertyExpression
+            DTS:Name="FromLine">@[$Package::EmailFrom]</DTS:PropertyExpression>
+          <DTS:PropertyExpression
+            DTS:Name="Subject">@[$Package::EmailSubject]</DTS:PropertyExpression>
+          <DTS:PropertyExpression
+            DTS:Name="ToLine">@[$Package::EmailTo]</DTS:PropertyExpression>
+          <DTS:ObjectData>
+            <SendMailTask:SendMailTaskData
+              SendMailTask:SMTPServer="{36182ED3-B089-442A-AAC6-05DBE5A3073E}"
+              SendMailTask:From="SP_WM_PDF_TRANSFER@morrisonus.com"
+              SendMailTask:To="paul.warnes@morrisonus.com"
+              SendMailTask:BCC="paul.warnes@morrisonus.com"
+              SendMailTask:Subject="Scottish Power Work Mobile PDF transfer import results (DO NOT REPLY)"
+              SendMailTask:MessageSourceType="Variable"
+              SendMailTask:MessageSource="User::EmailBody" xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Email Summary\Set Final Status"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DelayValidation="True"
+          DTS:Description="Set Final Status"
+          DTS:DTSID="{9c2570ff-f704-48b8-9639-02e3461c2687}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:FailParentOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Set Final Status"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{05F262A3-7BEC-47E7-B71F-72487B099187}"
+              SQLTask:SqlStatementSource="DECLARE @ImportHoldingTable        varchar(255)&#xA;DECLARE @SQL  nvarchar(255)&#xA;&#xA;SET @ImportHoldingTable = ?&#xA;            &#xA;SET @SQL = 'UPDATE ' + @ImportHoldingTable + ' SET StatusCode = -999 where StatusCode &lt; 0'&#xA;EXEC SP_EXECUTESQL @SQL&#xA;&#xA;SET @SQL = 'UPDATE ' + @ImportHoldingTable + ' SET StatusCode = 999 where StatusCode = 30'&#xA;EXEC SP_EXECUTESQL @SQL" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="$Package::ImportHoldingTable"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="129"
+                SQLTask:ParameterSize="255" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Email Summary.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{6789E232-6248-4F5B-9019-65403847ADAC}"
+          DTS:EvalOp="1"
+          DTS:Expression="@[User::FilesToReportOn]&gt;0"
+          DTS:From="Package\Email Summary\Count valid rows"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Email Summary\Prepare Summary Records" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Email Summary.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{44C42FBD-59AF-4BC7-8B3D-40A4EED38991}"
+          DTS:EvalOp="1"
+          DTS:Expression="@[User::FilesToReportOn] ==0"
+          DTS:From="Package\Email Summary\Count valid rows"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\Email Summary\SendNoFilesEmail" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Email Summary.PrecedenceConstraints[Constraint 2]"
+          DTS:CreationName=""
+          DTS:DTSID="{CBA458DB-254C-4E90-BF1C-FA4F1ABEA309}"
+          DTS:From="Package\Email Summary\Prepare Summary Records"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 2"
+          DTS:To="Package\Email Summary\Iterate imported files" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Email Summary.PrecedenceConstraints[Constraint 3]"
+          DTS:CreationName=""
+          DTS:DTSID="{1372B5BA-7C07-41AB-86BF-BBF721197325}"
+          DTS:From="Package\Email Summary\Iterate imported files"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 3"
+          DTS:To="Package\Email Summary\SendPostProcessEmail" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Email Summary.PrecedenceConstraints[Constraint 4]"
+          DTS:CreationName=""
+          DTS:DTSID="{388B08A2-4C4B-46E4-BD15-45361F1C6E32}"
+          DTS:From="Package\Email Summary\SendPostProcessEmail"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 4"
+          DTS:To="Package\Email Summary\Set Final Status" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Get updated WMS Isis data + attachments to process"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{F0E52911-1F93-49EB-BFC9-E243A550CD3B}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get updated WMS Isis data + attachments to process">
+      <DTS:Variables />
+      <DTS:LoggingOptions
+        DTS:FilterKind="0" />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Get updated WMS Isis data + attachments to process\Count valid rows"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DelayValidation="True"
+          DTS:Description="Count valid rows"
+          DTS:DTSID="{5df58fea-392b-4475-bcad-e492246bc528}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:FailParentOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Count valid rows"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{05F262A3-7BEC-47E7-B71F-72487B099187}"
+              SQLTask:SqlStatementSource="SELECT COUNT(*) FROM HoldingTable_WI &#xA;WHERE StatusCode=10"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::RowsToProcess" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Get updated WMS Isis data + attachments to process\Get new attachments"
+          DTS:CreationName="Microsoft.ExecuteProcess"
+          DTS:DelayValidation="True"
+          DTS:Description="Get new attachments"
+          DTS:DTSID="{d199b145-1fd1-4262-a5f8-aa1133ad3fac}"
+          DTS:ExecutableType="Microsoft.ExecuteProcess"
+          DTS:FailPackageOnFailure="True"
+          DTS:FailParentOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Get new attachments"
+          DTS:TaskContact="Execute Process Task;Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:PropertyExpression
+            DTS:Name="Executable">@[$Package::RJExecutable]</DTS:PropertyExpression>
+          <DTS:PropertyExpression
+            DTS:Name="WorkingDirectory">@[$Package::RJPath]</DTS:PropertyExpression>
+          <DTS:EventHandlers>
+            <DTS:EventHandler
+              DTS:refId="Package\Get updated WMS Isis data + attachments to process\Get new attachments.EventHandlers[OnError]"
+              DTS:CreationName="OnError"
+              DTS:DTSID="{ecd4a435-1f4e-4516-bf4a-479d9474eb0e}"
+              DTS:EventID="7012467"
+              DTS:EventName="OnError"
+              DTS:LocaleID="-1">
+              <DTS:Variables>
+                <DTS:Variable
+                  DTS:CreationName=""
+                  DTS:Description="The propagate property of the event"
+                  DTS:DTSID="{c86293d3-fb60-4ab6-a886-a28a703ecd47}"
+                  DTS:IncludeInDebugDump="6789"
+                  DTS:Namespace="System"
+                  DTS:ObjectName="Propagate">
+                  <DTS:VariableValue
+                    DTS:DataType="11">-1</DTS:VariableValue>
+                </DTS:Variable>
+              </DTS:Variables>
+              <DTS:Executables />
+            </DTS:EventHandler>
+          </DTS:EventHandlers>
+          <DTS:ObjectData>
+            <ExecuteProcessData
+              Executable="E:\RelationalJunction\public\bin\rj4salesforce.bat"
+              Arguments="-config SP_WM_PDF_TRANSFER -getbyquery ATTACHMENT"
+              WorkingDirectory="E:\RelationalJunction\public\bin" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Get updated WMS Isis data + attachments to process\Get updated Isis data"
+          DTS:CreationName="Microsoft.ExecuteProcess"
+          DTS:DelayValidation="True"
+          DTS:Description="Get updated ISIS data"
+          DTS:DTSID="{e89b941b-0362-40e8-8b22-b4dc9de87a44}"
+          DTS:ExecutableType="Microsoft.ExecuteProcess"
+          DTS:FailPackageOnFailure="True"
+          DTS:FailParentOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Get updated Isis data"
+          DTS:TaskContact="Execute Process Task;Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:PropertyExpression
+            DTS:Name="Executable">@[$Package::RJExecutable]</DTS:PropertyExpression>
+          <DTS:PropertyExpression
+            DTS:Name="WorkingDirectory">@[$Package::RJPath]</DTS:PropertyExpression>
+          <DTS:ObjectData>
+            <ExecuteProcessData
+              Executable="E:\RelationalJunction\public\bin\rj4salesforce.bat"
+              Arguments="-config SP_WM_PDF_TRANSFER -GetGlobal"
+              WorkingDirectory="E:\RelationalJunction\public\bin" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DelayValidation="True"
+          DTS:Description="Generate Attachment SOQL file string dynamically"
+          DTS:DTSID="{55777E6C-35FB-4CDC-8CE6-6338A16D82D8}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:FailPackageOnFailure="True"
+          DTS:FailParentOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Prepare SOQL string"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v9; (C) 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:ObjectData>
+            <pipeline
+              BLOBTempStoragePath=""
+              bufferTempStoragePath=""
+              engineThreads="5"
+              version="1">
+              <components>
+                <component
+                  refId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\Flat File Destination"
+                  componentClassID="Microsoft.FlatFileDestination"
+                  contactInfo="Flat File Destination;Microsoft Corporation;Microsoft SqlServer v9; (C) 2005 Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Flat File Destination"
+                  localeId="2057"
+                  name="Flat File Destination">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      description="Specifies whether the data will overwrite or append to the destination file."
+                      name="Overwrite">true</property>
+                    <property
+                      dataType="System.Null"
+                      description="Specifies the text to write to the destination file before any data is written."
+                      expressionType="Notify"
+                      name="Header" />
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\Flat File Destination.Connections[FlatFileConnection]"
+                      connectionManagerID="Package.ConnectionManagers[RJATTACHMENTSOQL]"
+                      connectionManagerRefId="Package.ConnectionManagers[RJATTACHMENTSOQL]"
+                      name="FlatFileConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\Flat File Destination.Inputs[Flat File Destination Input]"
+                      hasSideEffects="true"
+                      name="Flat File Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\Flat File Destination.Inputs[Flat File Destination Input].Columns[SOQLContent]"
+                          cachedCodepage="1252"
+                          cachedDataType="text"
+                          cachedName="SOQLContent"
+                          externalMetadataColumnId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Column 0]"
+                          lineageId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source.Outputs[OLE DB Source Output].Columns[SOQLContent]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\Flat File Destination.Inputs[Flat File Destination Input].ExternalColumns[Column 0]"
+                          codePage="1252"
+                          dataType="text"
+                          name="Column 0" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                </component>
+                <component
+                  refId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation;Microsoft SqlServer v9; (C) 2005 Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="OLE DB Source"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">DECLARE @QuotedIdentifier char(1); 
+SET @QuotedIdentifier = '''' -- single quote
+DECLARE @ListDelimeter char(1); 
+SET @ListDelimeter = ','	--comma
+DECLARE @CSVlist varchar(MAX)
+ 
+SELECT	@CSVlist = COALESCE(@CSVlist + @ListDelimeter, '')
+		+ QUOTENAME([Id], @QuotedIdentifier)
+FROM	dbo.[HoldingTable_WI]  AS SOQLContent
+WHERE	StatusCode=10
+
+SELECT 'PARENTID IN (' + @CSVlist + ') AND ISDELETED = FALSE AND NAME LIKE ''SP%''' AS SOQLContent</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[RJ]"
+                      connectionManagerRefId="Package.ConnectionManagers[RJ]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source.Outputs[OLE DB Source Output].Columns[SOQLContent]"
+                          codePage="1252"
+                          dataType="text"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SOQLContent]"
+                          lineageId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source.Outputs[OLE DB Source Output].Columns[SOQLContent]"
+                          name="SOQLContent"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SOQLContent]"
+                          codePage="1252"
+                          dataType="text"
+                          name="SOQLContent" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SOQLContent]"
+                          codePage="1252"
+                          dataType="text"
+                          lineageId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SOQLContent]"
+                          name="SOQLContent" />
+                        <outputColumn
+                          refId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string.Paths[OLE DB Source Output]"
+                  endId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\Flat File Destination.Inputs[Flat File Destination Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source.Outputs[OLE DB Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Get updated WMS Isis data + attachments to process\Validate imported attachments"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DelayValidation="True"
+          DTS:Description="Validate imported attachments"
+          DTS:DTSID="{1d6c47a4-a3d4-45b5-9bdf-3d5fce4fc3b6}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:FailParentOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Validate imported attachments"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:EventHandlers>
+            <DTS:EventHandler
+              DTS:refId="Package\Get updated WMS Isis data + attachments to process\Validate imported attachments.EventHandlers[OnError]"
+              DTS:CreationName="OnError"
+              DTS:DTSID="{bbec27d1-c90f-44e6-9402-7e24739afdbd}"
+              DTS:EventID="0"
+              DTS:EventName="OnError"
+              DTS:LocaleID="-1">
+              <DTS:Variables>
+                <DTS:Variable
+                  DTS:CreationName=""
+                  DTS:Description="The propagate property of the event"
+                  DTS:DTSID="{7b9db72a-adbe-4060-b2a6-8a120073b24b}"
+                  DTS:IncludeInDebugDump="6789"
+                  DTS:Namespace="System"
+                  DTS:ObjectName="Propagate">
+                  <DTS:VariableValue
+                    DTS:DataType="11">-1</DTS:VariableValue>
+                </DTS:Variable>
+              </DTS:Variables>
+              <DTS:Executables />
+            </DTS:EventHandler>
+          </DTS:EventHandlers>
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{05F262A3-7BEC-47E7-B71F-72487B099187}"
+              SQLTask:SqlStatementSource="exec SP_WM_Attachments_Validate" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Get updated WMS Isis data + attachments to process.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{4F08F6B9-4F03-446E-947C-B22469D10BDA}"
+          DTS:EvalOp="1"
+          DTS:Expression="@[User::RowsToProcess] &gt;0"
+          DTS:From="Package\Get updated WMS Isis data + attachments to process\Count valid rows"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Get updated WMS Isis data + attachments to process.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{C240F764-D4D7-4F9B-B10F-99DB1307CCB1}"
+          DTS:From="Package\Get updated WMS Isis data + attachments to process\Get updated Isis data"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\Get updated WMS Isis data + attachments to process\Count valid rows" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Get updated WMS Isis data + attachments to process.PrecedenceConstraints[Constraint 2]"
+          DTS:CreationName=""
+          DTS:DTSID="{2F6C70E1-70C7-4DD4-9826-37B667341C6F}"
+          DTS:From="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 2"
+          DTS:To="Package\Get updated WMS Isis data + attachments to process\Get new attachments" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Get updated WMS Isis data + attachments to process.PrecedenceConstraints[Constraint 3]"
+          DTS:CreationName=""
+          DTS:DTSID="{5DFC9EB1-E5B3-4A30-B056-350907EC25D1}"
+          DTS:From="Package\Get updated WMS Isis data + attachments to process\Get new attachments"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 3"
+          DTS:To="Package\Get updated WMS Isis data + attachments to process\Validate imported attachments" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Process &amp; Upload"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{BBBBA685-551B-4BFF-A864-B4EF69893F3D}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Process &amp; Upload">
+      <DTS:Variables />
+      <DTS:LoggingOptions
+        DTS:FilterKind="0" />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Process &amp; Upload\Get WMS Folder &amp; MobileWorking ID"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DelayValidation="True"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{80E03829-6389-4067-8EC1-72A150389B3C}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:FailPackageOnFailure="True"
+          DTS:FailParentOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Get WMS Folder &amp; MobileWorking ID"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{05F262A3-7BEC-47E7-B71F-72487B099187}"
+              SQLTask:SqlStatementSource="SELECT ? + RIGHT(WORK_INSTRUCTION.NAMEX,6) AS FOLDERNAME, HoldingTable_WI.Id AS MW_ID&#xA;FROM &#x9;ATTACHMENT&#xA;JOIN&#x9;HoldingTable_WI ON HoldingTable_WI.ID = ATTACHMENT.PARENTID&#xA;JOIN&#x9;MOBILE_WORKING ON ATTACHMENT.PARENTID = MOBILE_WORKING.ID&#xA;JOIN&#x9;WORK_INSTRUCTION ON MOBILE_WORKING.WMS_REFERENCE = WORK_INSTRUCTION.ID&#xA;WHERE&#x9;HoldingTable_WI.StatusCode = 20"
+              SQLTask:ResultType="ResultSetType_Rowset" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::FolderTable" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="$Package::FilePathStub"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="129"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF"
+          DTS:CreationName="STOCK:FOREACHLOOP"
+          DTS:Description="Foreach Loop Container"
+          DTS:DTSID="{64874C5C-EF6E-4050-A982-5087E0A505EA}"
+          DTS:ExecutableType="STOCK:FOREACHLOOP"
+          DTS:FailPackageOnFailure="True"
+          DTS:FailParentOnFailure="True"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Iterate to Create WMS Folders &amp; Transfer PDF">
+          <DTS:ForEachEnumerator
+            DTS:CreationName="Microsoft.ForEachADOEnumerator"
+            DTS:DTSID="{5802CC88-4672-4660-8973-43CB73B7179C}"
+            DTS:ObjectName="{5802CC88-4672-4660-8973-43CB73B7179C}">
+            <DTS:ObjectData>
+              <FEEADO
+                EnumType="EnumerateRowsInFirstTable"
+                VarName="User::FolderTable" />
+            </DTS:ObjectData>
+          </DTS:ForEachEnumerator>
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:Executables>
+            <DTS:Executable
+              DTS:refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Create WMS Folders"
+              DTS:CreationName="Microsoft.FileSystemTask"
+              DTS:DelayValidation="True"
+              DTS:Description="File System Task"
+              DTS:DTSID="{A2DB765C-76DE-47EF-A5E0-3331C45E062C}"
+              DTS:ExecutableType="Microsoft.FileSystemTask"
+              DTS:FailPackageOnFailure="True"
+              DTS:FailParentOnFailure="True"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Create WMS Folders"
+              DTS:TaskContact="File System Task;Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+              DTS:ThreadHint="0">
+              <DTS:Variables />
+              <DTS:LoggingOptions
+                DTS:FilterKind="0" />
+              <DTS:ObjectData>
+                <FileSystemData
+                  TaskOperationType="CreateDirectory"
+                  TaskOverwriteDestFile="True"
+                  TaskSourcePath="User::FolderName"
+                  TaskIsSourceVariable="True" />
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
+              DTS:refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task"
+              DTS:CreationName="Microsoft.Pipeline"
+              DTS:DelayValidation="True"
+              DTS:Description="Data Flow Task"
+              DTS:DTSID="{9EA21BF6-1AEF-44EA-A702-629F56F10F1A}"
+              DTS:ExecutableType="Microsoft.Pipeline"
+              DTS:FailPackageOnFailure="True"
+              DTS:FailParentOnFailure="True"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Data Flow Task"
+              DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server v9; (C) 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+              <DTS:Variables />
+              <DTS:LoggingOptions
+                DTS:FilterKind="0" />
+              <DTS:ObjectData>
+                <pipeline
+                  BLOBTempStoragePath=""
+                  bufferTempStoragePath=""
+                  engineThreads="5"
+                  version="1">
+                  <components>
+                    <component
+                      refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\Export Column"
+                      componentClassID="Microsoft.Extractor"
+                      contactInfo="Export Column;Microsoft Corporation;Microsoft SqlServer v9; (C) 2005 Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                      description="Exports column values from rows in a dataset to files."
+                      name="Export Column"
+                      usesDispositions="true">
+                      <inputs>
+                        <input
+                          refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\Export Column.Inputs[Export Column Input]"
+                          hasSideEffects="true"
+                          name="Export Column Input">
+                          <inputColumns>
+                            <inputColumn
+                              refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\Export Column.Inputs[Export Column Input].Columns[FULLPATHFILENAME]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="804"
+                              cachedName="FULLPATHFILENAME"
+                              errorOrTruncationOperation="File Open"
+                              errorRowDisposition="FailComponent"
+                              lineageId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[FULLPATHFILENAME]">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Specifies the ID of the input column that contains the file data."
+                                  name="FileDataColumnID">#{Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\Export Column.Inputs[Export Column Input].Columns[BODYX]}</property>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether to write a byte-order marker (BOM) to the file."
+                                  name="WriteBOM">false</property>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether to force truncation of an existing file."
+                                  name="ForceTruncate">true</property>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether to append data to an existing file."
+                                  name="AllowAppend">false</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\Export Column.Inputs[Export Column Input].Columns[BODYX]"
+                              cachedDataType="image"
+                              cachedName="BODYX"
+                              errorOrTruncationOperation="File Write"
+                              errorRowDisposition="FailComponent"
+                              lineageId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[BODYX]">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Specifies the ID of the input column that contains the file data."
+                                  name="FileDataColumnID">#{Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\0:invalid}</property>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether to write a byte-order marker (BOM) to the file."
+                                  name="WriteBOM">false</property>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether to force truncation of an existing file."
+                                  name="ForceTruncate">false</property>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether to append data to an existing file."
+                                  name="AllowAppend">true</property>
+                              </properties>
+                            </inputColumn>
+                          </inputColumns>
+                          <externalMetadataColumns />
+                        </input>
+                      </inputs>
+                      <outputs>
+                        <output
+                          refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\Export Column.Outputs[Export Column Output]"
+                          exclusionGroup="1"
+                          name="Export Column Output"
+                          synchronousInputId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\Export Column.Inputs[Export Column Input]">
+                          <externalMetadataColumns />
+                        </output>
+                        <output
+                          refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\Export Column.Outputs[Export Column Error Output]"
+                          exclusionGroup="1"
+                          isErrorOut="true"
+                          name="Export Column Error Output"
+                          synchronousInputId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\Export Column.Inputs[Export Column Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\Export Column.Outputs[Export Column Error Output].Columns[ErrorCode]"
+                              dataType="i4"
+                              lineageId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\Export Column.Outputs[Export Column Error Output].Columns[ErrorCode]"
+                              name="ErrorCode"
+                              specialFlags="1" />
+                            <outputColumn
+                              refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\Export Column.Outputs[Export Column Error Output].Columns[ErrorColumn]"
+                              dataType="i4"
+                              lineageId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\Export Column.Outputs[Export Column Error Output].Columns[ErrorColumn]"
+                              name="ErrorColumn"
+                              specialFlags="2" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                    <component
+                      refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source"
+                      componentClassID="Microsoft.OLEDBSource"
+                      contactInfo="OLE DB Source;Microsoft Corporation;Microsoft SqlServer v9; (C) 2005 Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                      description="OLE DB Source"
+                      name="OLE DB Source"
+                      usesDispositions="true"
+                      version="7">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                          name="CommandTimeout">0</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the name of the database object used to open a rowset."
+                          name="OpenRowset"></property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the variable that contains the name of the database object used to open a rowset."
+                          name="OpenRowsetVariable"></property>
+                        <property
+                          dataType="System.String"
+                          description="The SQL command to be executed."
+                          name="SqlCommand"
+                          UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                        <property
+                          dataType="System.String"
+                          description="The variable that contains the SQL command to be executed."
+                          name="SqlCommandVariable">User::SQLToExecute</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the column code page to use when code page information is unavailable from the data source."
+                          name="DefaultCodePage">1252</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Forces the use of the DefaultCodePage property value when describing character data."
+                          name="AlwaysUseDefaultCodePage">false</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the mode used to access the database."
+                          name="AccessMode"
+                          typeConverter="AccessMode">3</property>
+                        <property
+                          dataType="System.String"
+                          description="The mappings between the parameters in the SQL command and variables."
+                          name="ParameterMapping"></property>
+                      </properties>
+                      <connections>
+                        <connection
+                          refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Connections[OleDbConnection]"
+                          connectionManagerID="Package.ConnectionManagers[RJ]"
+                          connectionManagerRefId="Package.ConnectionManagers[RJ]"
+                          description="The OLE DB runtime connection used to access the database."
+                          name="OleDbConnection" />
+                      </connections>
+                      <outputs>
+                        <output
+                          refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Output]"
+                          name="OLE DB Source Output">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[FULLPATHFILENAME]"
+                              codePage="1252"
+                              dataType="str"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              externalMetadataColumnId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FULLPATHFILENAME]"
+                              length="804"
+                              lineageId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[FULLPATHFILENAME]"
+                              name="FULLPATHFILENAME"
+                              truncationRowDisposition="FailComponent" />
+                            <outputColumn
+                              refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[BODYX]"
+                              dataType="image"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              externalMetadataColumnId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[BODYX]"
+                              lineageId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Output].Columns[BODYX]"
+                              name="BODYX"
+                              truncationRowDisposition="FailComponent" />
+                          </outputColumns>
+                          <externalMetadataColumns
+                            isUsed="True">
+                            <externalMetadataColumn
+                              refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FULLPATHFILENAME]"
+                              codePage="1252"
+                              dataType="str"
+                              length="804"
+                              name="FULLPATHFILENAME" />
+                            <externalMetadataColumn
+                              refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[BODYX]"
+                              dataType="image"
+                              name="BODYX" />
+                          </externalMetadataColumns>
+                        </output>
+                        <output
+                          refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                          isErrorOut="true"
+                          name="OLE DB Source Error Output">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FULLPATHFILENAME]"
+                              codePage="1252"
+                              dataType="str"
+                              length="804"
+                              lineageId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FULLPATHFILENAME]"
+                              name="FULLPATHFILENAME" />
+                            <outputColumn
+                              refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[BODYX]"
+                              dataType="image"
+                              lineageId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[BODYX]"
+                              name="BODYX" />
+                            <outputColumn
+                              refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                              dataType="i4"
+                              lineageId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                              name="ErrorCode"
+                              specialFlags="1" />
+                            <outputColumn
+                              refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                              dataType="i4"
+                              lineageId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                              name="ErrorColumn"
+                              specialFlags="2" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                  </components>
+                  <paths>
+                    <path
+                      refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task.Paths[OLE DB Source Output]"
+                      endId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\Export Column.Inputs[Export Column Input]"
+                      name="OLE DB Source Output"
+                      startId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source.Outputs[OLE DB Source Output]" />
+                  </paths>
+                </pipeline>
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
+              DTS:refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Post Process"
+              DTS:CreationName="Microsoft.ExecuteSQLTask"
+              DTS:DelayValidation="True"
+              DTS:Description="Update Status Code for processed Mobile Working Ids"
+              DTS:DTSID="{209871DB-D4B5-47A5-B640-CF3A4B8E737D}"
+              DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+              DTS:FailPackageOnFailure="True"
+              DTS:FailParentOnFailure="True"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Post Process"
+              DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+              DTS:ThreadHint="0">
+              <DTS:Variables />
+              <DTS:LoggingOptions
+                DTS:FilterKind="0" />
+              <DTS:ObjectData>
+                <SQLTask:SqlTaskData
+                  SQLTask:Connection="{05F262A3-7BEC-47E7-B71F-72487B099187}"
+                  SQLTask:SqlStatementSource="UPDATE HoldingTable_WI &#xA;SET StatusCode = 30&#xA; WHERE ID = ?" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+                  <SQLTask:ParameterBinding
+                    SQLTask:ParameterName="0"
+                    SQLTask:DtsVariableName="User::WM_ID"
+                    SQLTask:ParameterDirection="Input"
+                    SQLTask:DataType="129"
+                    SQLTask:ParameterSize="-1" />
+                </SQLTask:SqlTaskData>
+              </DTS:ObjectData>
+            </DTS:Executable>
+          </DTS:Executables>
+          <DTS:PrecedenceConstraints>
+            <DTS:PrecedenceConstraint
+              DTS:refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF.PrecedenceConstraints[Constraint]"
+              DTS:CreationName=""
+              DTS:DTSID="{0AC9CF02-40D3-4642-B3AC-45BA602662B3}"
+              DTS:From="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Create WMS Folders"
+              DTS:LogicalAnd="True"
+              DTS:ObjectName="Constraint"
+              DTS:To="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task" />
+            <DTS:PrecedenceConstraint
+              DTS:refId="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF.PrecedenceConstraints[Constraint 1]"
+              DTS:CreationName=""
+              DTS:DTSID="{79F14CAD-9DBA-4442-B21C-C8D53AAEB322}"
+              DTS:From="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task"
+              DTS:LogicalAnd="True"
+              DTS:ObjectName="Constraint 1"
+              DTS:To="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Post Process" />
+          </DTS:PrecedenceConstraints>
+          <DTS:ForEachVariableMappings>
+            <DTS:ForEachVariableMapping
+              DTS:CreationName=""
+              DTS:DTSID="{0B3DE90C-E46A-4541-9AD9-23DAD8750525}"
+              DTS:ObjectName="{0B3DE90C-E46A-4541-9AD9-23DAD8750525}"
+              DTS:ValueIndex="0"
+              DTS:VariableName="User::FolderName" />
+            <DTS:ForEachVariableMapping
+              DTS:CreationName=""
+              DTS:DTSID="{2EEB6838-AA46-4629-A098-88DB1E469291}"
+              DTS:ObjectName="{2EEB6838-AA46-4629-A098-88DB1E469291}"
+              DTS:ValueIndex="1"
+              DTS:VariableName="User::WM_ID" />
+          </DTS:ForEachVariableMappings>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Process &amp; Upload.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{9E51F817-57D1-4ED0-B831-2787751D815A}"
+          DTS:From="Package\Process &amp; Upload\Get WMS Folder &amp; MobileWorking ID"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{8F079C55-8B2D-4A5F-A36C-16B0D0DD8B95}"
+      DTS:From="Package\Get updated WMS Isis data + attachments to process"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Process &amp; Upload" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{FCB2D5A4-5401-4A3B-BF07-3AF5B2D2B566}"
+      DTS:From="Package\Process &amp; Upload"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Email Summary" />
+  </DTS:PrecedenceConstraints>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{D38089DE-C5B2-4F0E-B41B-672CD54B65F1}"
+      DTS:EventID="0"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="The propagate property of the event"
+          DTS:DTSID="{5386E4FE-963F-4DE6-9948-1CE6A560C67A}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\Check ErrorState"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{8CC95F5D-A68C-4420-A2F1-C1A6C2C84E0E}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Check ErrorState"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{05F262A3-7BEC-47E7-B71F-72487B099187}"
+              SQLTask:SqlStatementSource="DECLARE @ErrorState tinyint&#xA;&#xA;SET &#x9;@ErrorState = ?&#xA;&#xA;IF @ErrorState = 0  &#xA; SELECT  CAST(1 AS TINYINT)&#xA;ELSE &#xA; SELECT CAST(0 AS TINYINT)&#xA;"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::ReportError" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::ErrorState"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="17"
+                SQLTask:ParameterSize="0" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\Send Error email"
+          DTS:CreationName="Microsoft.SendMailTask"
+          DTS:Description="Send Error email"
+          DTS:DTSID="{29236C9C-CD9A-477A-94CB-CE6C765586ED}"
+          DTS:ExecutableType="Microsoft.SendMailTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Send Error email"
+          DTS:TaskContact="Send Mail Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:PropertyExpression
+            DTS:Name="BCCLine">@[$Package::ErrorEmailZensarTo]</DTS:PropertyExpression>
+          <DTS:PropertyExpression
+            DTS:Name="FromLine">@[$Package::EmailFrom]</DTS:PropertyExpression>
+          <DTS:PropertyExpression
+            DTS:Name="MessageSource">@[User::ErrorEmailBody]</DTS:PropertyExpression>
+          <DTS:PropertyExpression
+            DTS:Name="Subject">@[$Package::ErrorEmailSubject]</DTS:PropertyExpression>
+          <DTS:PropertyExpression
+            DTS:Name="ToLine">@[$Package::ErrorEmailMUSTo]</DTS:PropertyExpression>
+          <DTS:ObjectData>
+            <SendMailTask:SendMailTaskData
+              SendMailTask:SMTPServer="{36182ED3-B089-442A-AAC6-05DBE5A3073E}"
+              SendMailTask:From="SP_WM_PDF_TRANSFER@morrisonus.com"
+              SendMailTask:To="paul.warnes@morrisonus.com"
+              SendMailTask:BCC="paul.warnes@morrisonus.com"
+              SendMailTask:Subject="An error has occurred during the execution of this routine for transferring WM Scottish Power PDF files to Bellshill Server location" xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\SetEmailBody"
+          DTS:CreationName="Microsoft.ExpressionTask"
+          DTS:Description="Expression Task"
+          DTS:DTSID="{986D5B4C-CD08-4BC0-895E-FFB823849EBE}"
+          DTS:ExecutableType="Microsoft.ExpressionTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SetEmailBody"
+          DTS:TaskContact="Expression Task;Microsoft Corporation; SQL Server 2012; � 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <ExpressionTask
+              Expression="@[User::ErrorEmailBody]= @[$Package::ErrorEmailBody]+&quot;\n\n&quot; +  &quot;Source : &quot;+@[System::SourceName]+ &quot;\n&quot; + &quot;Error: &quot; +  @[System::ErrorDescription]" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\Update ErrorState"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Update ErrorState"
+          DTS:DTSID="{724D0B9F-F496-41E2-A551-E1D63C42A73A}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Update ErrorState"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; Microsoft SQL Server v9; © 2004 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{05F262A3-7BEC-47E7-B71F-72487B099187}"
+              SQLTask:SqlStatementSource="SELECT CAST(1 AS TINYINT)"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::ErrorState" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package.EventHandlers[OnError].PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{85F8E166-1DC5-43DC-86A2-C1B610F3BCB5}"
+          DTS:EvalOp="1"
+          DTS:Expression="@[User::ReportError]==1"
+          DTS:From="Package.EventHandlers[OnError]\Check ErrorState"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package.EventHandlers[OnError]\SetEmailBody" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package.EventHandlers[OnError].PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{A5DD9C1E-AB3C-4EA2-A439-6565C4F882A4}"
+          DTS:From="Package.EventHandlers[OnError]\SetEmailBody"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package.EventHandlers[OnError]\Send Error email" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package.EventHandlers[OnError].PrecedenceConstraints[Constraint 2]"
+          DTS:CreationName=""
+          DTS:DTSID="{958A3A76-90A4-41FC-8237-AFFBBF6A2209}"
+          DTS:From="Package.EventHandlers[OnError]\Send Error email"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 2"
+          DTS:To="Package.EventHandlers[OnError]\Update ErrorState" />
+      </DTS:PrecedenceConstraints>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="64" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="129,44"
+          Id="Package\Email Summary\Count valid rows"
+          TopLeft="100,17.0754716981132" />
+        <NodeLayout
+          Size="145,42"
+          Id="Package\Email Summary\Iterate imported files\SetEmailBody"
+          TopLeft="23,14" />
+        <ContainerLayout
+          HeaderHeight="43.924528301886795"
+          IsExpanded="True"
+          PanelSize="229,78"
+          Size="229,122"
+          Id="Package\Email Summary\Iterate imported files"
+          TopLeft="51.0188679245282,178.056603773585" />
+        <NodeLayout
+          Size="136,44"
+          Id="Package\Email Summary\Prepare Summary Records"
+          TopLeft="20.8301886792453,96.622641509434" />
+        <NodeLayout
+          Size="152,44"
+          Id="Package\Email Summary\SendNoFilesEmail"
+          TopLeft="184.943396226415,92.2075471698113" />
+        <NodeLayout
+          Size="135,44"
+          Id="Package\Email Summary\SendPostProcessEmail"
+          TopLeft="93.9622641509434,332.471698113208" />
+        <NodeLayout
+          Size="136,44"
+          Id="Package\Email Summary\Set Final Status"
+          TopLeft="94.7169811320754,418.660377358491" />
+        <EdgeLayout
+          Id="Package\Email Summary.PrecedenceConstraints[Constraint]"
+          TopLeft="143.622641509434,61">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-54.9056603773585,35.622641509434"
+              Start="0,0"
+              End="-54.9056603773585,28.122641509434">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17.811320754717" />
+                  <mssgle:LineSegment
+                    End="-54.9056603773585,17.811320754717" />
+                  <mssgle:LineSegment
+                    End="-54.9056603773585,28.122641509434" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-35.4528301886793,22.811320754717,16,16"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Email Summary.PrecedenceConstraints[Constraint 1]"
+          TopLeft="185.132075471698,61">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="75.6603773584906,31.2075471698113"
+              Start="0,0"
+              End="75.6603773584906,23.7075471698113">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15.622641509434" />
+                  <mssgle:LineSegment
+                    End="75.6603773584906,15.622641509434" />
+                  <mssgle:LineSegment
+                    End="75.6603773584906,23.7075471698113" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="29.8301886792453,20.622641509434,16,16"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Email Summary.PrecedenceConstraints[Constraint 2]"
+          TopLeft="88.8301886792453,140.622641509434">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="76.6886792452829,37.433962264151"
+              Start="0,0"
+              End="76.6886792452829,29.933962264151">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,14.7169811320755" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14.7169811320755"
+                    Point2="0,18.7169811320755"
+                    Point3="4,18.7169811320755" />
+                  <mssgle:LineSegment
+                    End="72.6886792452829,18.7169811320755" />
+                  <mssgle:CubicBezierSegment
+                    Point1="72.6886792452829,18.7169811320755"
+                    Point2="76.6886792452829,18.7169811320755"
+                    Point3="76.6886792452829,22.7169811320755" />
+                  <mssgle:LineSegment
+                    End="76.6886792452829,29.933962264151" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Email Summary.PrecedenceConstraints[Constraint 3]"
+          TopLeft="163.490566037736,300.056603773585">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,32.4150943396226"
+              Start="0,0"
+              End="0,24.9150943396226">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,24.9150943396226" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Email Summary.PrecedenceConstraints[Constraint 4]"
+          TopLeft="161.622641509434,376.358490566038">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0.981132075471692,42.3018867924528"
+              Start="0,0"
+              End="0.981132075471692,34.8018867924528">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.1320754716981" />
+                  <mssgle:LineSegment
+                    End="0.981132075471692,21.1320754716981" />
+                  <mssgle:LineSegment
+                    End="0.981132075471692,34.8018867924528" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43.924528301886795"
+          IsExpanded="True"
+          PanelSize="354,518"
+          Size="354,562"
+          Id="Package\Email Summary"
+          TopLeft="756.669811320755,4.5" />
+        <NodeLayout
+          Size="136,44"
+          Id="Package\Get updated WMS Isis data + attachments to process\Count valid rows"
+          TopLeft="39.9622641509434,99.4905660377358" />
+        <NodeLayout
+          Size="136,44"
+          Id="Package\Get updated WMS Isis data + attachments to process\Get new attachments"
+          TopLeft="39.811320754717,285.150943396226" />
+        <NodeLayout
+          Size="136,44"
+          Id="Package\Get updated WMS Isis data + attachments to process\Get updated Isis data"
+          TopLeft="39.9622641509434,14.4716981132075" />
+        <NodeLayout
+          Size="136,44"
+          Id="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string"
+          TopLeft="40,185.075471698113" />
+        <NodeLayout
+          Size="136,44"
+          Id="Package\Get updated WMS Isis data + attachments to process\Validate imported attachments"
+          TopLeft="39.9245283018868,380.018867924528" />
+        <EdgeLayout
+          Id="Package\Get updated WMS Isis data + attachments to process.PrecedenceConstraints[Constraint]"
+          TopLeft="107.849056603774,143.415094339623">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0.0377358490566024,41.6603773584906"
+              Start="0,0"
+              End="0.0377358490566024,34.1603773584906">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.8301886792453" />
+                  <mssgle:LineSegment
+                    End="0.0377358490566024,20.8301886792453" />
+                  <mssgle:LineSegment
+                    End="0.0377358490566024,34.1603773584906" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-7.9811320754717,25.8301886792453,16,16"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Get updated WMS Isis data + attachments to process.PrecedenceConstraints[Constraint 1]"
+          TopLeft="107.849056603774,58.3962264150943">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,41.0943396226415"
+              Start="0,0"
+              End="0,33.5943396226415">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33.5943396226415" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Get updated WMS Isis data + attachments to process.PrecedenceConstraints[Constraint 2]"
+          TopLeft="107.88679245283,229">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-0.188679245283012,56.1509433962264"
+              Start="0,0"
+              End="-0.188679245283012,48.6509433962264">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.0754716981132" />
+                  <mssgle:LineSegment
+                    End="-0.188679245283012,28.0754716981132" />
+                  <mssgle:LineSegment
+                    End="-0.188679245283012,48.6509433962264" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Get updated WMS Isis data + attachments to process.PrecedenceConstraints[Constraint 3]"
+          TopLeft="107.698113207547,329.075471698113">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0.113207547169807,50.9433962264151"
+              Start="0,0"
+              End="0.113207547169807,43.4433962264151">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.4716981132076" />
+                  <mssgle:LineSegment
+                    End="0.113207547169807,25.4716981132076" />
+                  <mssgle:LineSegment
+                    End="0.113207547169807,43.4433962264151" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43.924528301886795"
+          IsExpanded="True"
+          PanelSize="210,440"
+          Size="210,484"
+          Id="Package\Get updated WMS Isis data + attachments to process"
+          TopLeft="22.5,33.0094339622642" />
+        <NodeLayout
+          Size="157,45"
+          Id="Package\Process &amp; Upload\Get WMS Folder &amp; MobileWorking ID"
+          TopLeft="55.5094339622641,14.6981132075472" />
+        <NodeLayout
+          Size="136,44"
+          Id="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Create WMS Folders"
+          TopLeft="39.4339622641509,20.4716981132076" />
+        <NodeLayout
+          Size="136,44"
+          Id="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task"
+          TopLeft="38.9433962264151,112.056603773585" />
+        <NodeLayout
+          Size="136,44"
+          Id="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Post Process"
+          TopLeft="38.8679245283019,188.094339622642" />
+        <EdgeLayout
+          Id="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF.PrecedenceConstraints[Constraint]"
+          TopLeft="107.320754716981,64.3962264150944">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-0.490566037735846,47.6603773584906"
+              Start="0,0"
+              End="-0.490566037735846,40.1603773584906">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.811320754717" />
+                  <mssgle:LineSegment
+                    End="-0.490566037735846,23.811320754717" />
+                  <mssgle:LineSegment
+                    End="-0.490566037735846,40.1603773584906" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF.PrecedenceConstraints[Constraint 1]"
+          TopLeft="106.830188679245,155.981132075472">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-0.0754716981132049,32.1132075471698"
+              Start="0,0"
+              End="-0.0754716981132049,24.6132075471698">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,16.0377358490566" />
+                  <mssgle:LineSegment
+                    End="-0.0754716981132049,16.0377358490566" />
+                  <mssgle:LineSegment
+                    End="-0.0754716981132049,24.6132075471698" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43.924528301886795"
+          IsExpanded="True"
+          PanelSize="206,263"
+          Size="206,307"
+          Id="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF"
+          TopLeft="30.5660377358491,106.094339622642" />
+        <EdgeLayout
+          Id="Package\Process &amp; Upload.PrecedenceConstraints[Constraint]"
+          TopLeft="133.849056603774,59.6415094339623">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-0.528301886792462,46.4528301886792"
+              Start="0,0"
+              End="-0.528301886792462,38.9528301886792">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.2075471698113" />
+                  <mssgle:LineSegment
+                    End="-0.528301886792462,23.2075471698113" />
+                  <mssgle:LineSegment
+                    End="-0.528301886792462,38.9528301886792" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43.924528301886795"
+          IsExpanded="True"
+          PanelSize="274,436"
+          Size="274,480"
+          Id="Package\Process &amp; Upload"
+          TopLeft="308.952830188679,40.8773584905661" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="232.5,277.943396226415">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="76.452830188679,0"
+              Start="0,0"
+              End="68.952830188679,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="68.952830188679,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="582.952830188679,283.188679245283">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="173.716981132076,0"
+              Start="0,0"
+              End="166.216981132076,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="166.216981132076,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <DtsEventHandler
+    design-time-name="Package.EventHandlers[OnError]">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="136,44"
+          Id="Package.EventHandlers[OnError]\Check ErrorState"
+          TopLeft="5.5377358490566,5.5" />
+        <NodeLayout
+          Size="159,42"
+          Id="Package.EventHandlers[OnError]\Send Error email"
+          TopLeft="5.5,187.235849056604" />
+        <NodeLayout
+          Size="145,42"
+          Id="Package.EventHandlers[OnError]\SetEmailBody"
+          TopLeft="49,98" />
+        <NodeLayout
+          Size="136,44"
+          Id="Package.EventHandlers[OnError]\Update ErrorState"
+          TopLeft="5.5377358490566,272.103773584906" />
+        <EdgeLayout
+          Id="Package.EventHandlers[OnError].PrecedenceConstraints[Constraint]"
+          TopLeft="73.5377358490566,49.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="47.9622641509434,48.5"
+              Start="0,0"
+              End="47.9622641509434,41">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.25" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,20.25"
+                    Point2="0,24.25"
+                    Point3="4,24.25" />
+                  <mssgle:LineSegment
+                    End="43.9622641509434,24.25" />
+                  <mssgle:CubicBezierSegment
+                    Point1="43.9622641509434,24.25"
+                    Point2="47.9622641509434,24.25"
+                    Point3="47.9622641509434,28.25" />
+                  <mssgle:LineSegment
+                    End="47.9622641509434,41" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="15.9811320754717,29.25,16,16"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.EventHandlers[OnError].PrecedenceConstraints[Constraint 1]"
+          TopLeft="121.5,140">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-36.5,47.235849056604"
+              Start="0,0"
+              End="-36.5,39.735849056604">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.617924528302" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19.617924528302"
+                    Point2="0,23.617924528302"
+                    Point3="-4,23.617924528302" />
+                  <mssgle:LineSegment
+                    End="-32.5,23.617924528302" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-32.5,23.617924528302"
+                    Point2="-36.5,23.617924528302"
+                    Point3="-36.5,27.617924528302" />
+                  <mssgle:LineSegment
+                    End="-36.5,39.735849056604" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.EventHandlers[OnError].PrecedenceConstraints[Constraint 2]"
+          TopLeft="85,229.235849056604">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-11.4622641509434,42.867924528302"
+              Start="0,0"
+              End="-11.4622641509434,35.367924528302">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17.433962264151" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,17.433962264151"
+                    Point2="0,21.433962264151"
+                    Point3="-4,21.433962264151" />
+                  <mssgle:LineSegment
+                    End="-7.4622641509434,21.433962264151" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-7.4622641509434,21.433962264151"
+                    Point2="-11.4622641509434,21.433962264151"
+                    Point3="-11.4622641509434,25.433962264151" />
+                  <mssgle:LineSegment
+                    End="-11.4622641509434,35.367924528302" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </DtsEventHandler>
+  <TaskHost
+    design-time-name="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="152,42"
+          Id="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\OLE DB Source"
+          TopLeft="16.5,5.5" />
+        <NodeLayout
+          Size="174,42"
+          Id="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string\Flat File Destination"
+          TopLeft="5.50000000000001,107.5" />
+        <EdgeLayout
+          Id="Package\Get updated WMS Isis data + attachments to process\Prepare SOQL string.Paths[OLE DB Source Output]"
+          TopLeft="92.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="136,44"
+          Id="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source"
+          TopLeft="5.5,6.5" />
+        <NodeLayout
+          Size="136,44"
+          Id="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\Export Column"
+          TopLeft="7.46226415094338,117.349056603774" />
+        <EdgeLayout
+          Id="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task.Paths[OLE DB Source Output]"
+          TopLeft="74.4811320754717,50.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,66.8490566037736"
+              Start="0,0"
+              End="0,59.3490566037736">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,59.3490566037736" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process &amp; Upload\Iterate to Create WMS Folders &amp; Transfer PDF\Data Flow Task\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

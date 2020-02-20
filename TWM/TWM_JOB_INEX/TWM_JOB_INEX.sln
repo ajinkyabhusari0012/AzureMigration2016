@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "TWM_JOB_INEX", "TWM_JOB_INEX\TWM_JOB_INEX.dtproj", "{063E17A1-64CD-4687-9A76-5C6DF4E0FEA3}"
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 2
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = TWM_JOB_INEX\\TWM_JOB_INEX.dtproj
+		SccLocalPath1 = .
+		SccProjectFilePathRelativizedFromConnection1 = TWM_JOB_INEX\\
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{063E17A1-64CD-4687-9A76-5C6DF4E0FEA3}.Development|Default.ActiveCfg = Development
+		{063E17A1-64CD-4687-9A76-5C6DF4E0FEA3}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

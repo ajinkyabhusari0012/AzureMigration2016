@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "TWM_SENDCUSTFILE", "TWM_SENDCUSTFILE\TWM_SENDCUSTFILE.dtproj", "{DA93DE5D-22EE-46FA-917B-C7980A1825A0}"
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 2
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = TWM_SENDCUSTFILE\\TWM_SENDCUSTFILE.dtproj
+		SccLocalPath1 = .
+		SccProjectFilePathRelativizedFromConnection1 = TWM_SENDCUSTFILE\\
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA93DE5D-22EE-46FA-917B-C7980A1825A0}.Development|Default.ActiveCfg = Development
+		{DA93DE5D-22EE-46FA-917B-C7980A1825A0}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,19 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "TWM_JOB_FC_SFTP", "TWM_JOB_FC\TWM_JOB_FC_SFTP.dtproj", "{28FAD0DF-C7FB-49E9-85AF-9A2EF040F363}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{28FAD0DF-C7FB-49E9-85AF-9A2EF040F363}.Development|Default.ActiveCfg = Development
+		{28FAD0DF-C7FB-49E9-85AF-9A2EF040F363}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

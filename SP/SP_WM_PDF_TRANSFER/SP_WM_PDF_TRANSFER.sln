@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "SP_WM_PDF_TRANSFER", "SP_WM_PDF_TRANSFER\SP_WM_PDF_TRANSFER.dtproj", "{2F6CEEF4-C54C-4A21-AA9E-A7B72311E67E}"
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 2
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = SP_WM_PDF_TRANSFER\\SP_WM_PDF_TRANSFER.dtproj
+		SccLocalPath1 = .
+		SccProjectFilePathRelativizedFromConnection1 = SP_WM_PDF_TRANSFER\\
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2F6CEEF4-C54C-4A21-AA9E-A7B72311E67E}.Development|Default.ActiveCfg = Development
+		{2F6CEEF4-C54C-4A21-AA9E-A7B72311E67E}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "TW_METER_ITEM_IMPORT", "TW_METER_ITEM_IMPORT\TW_METER_ITEM_IMPORT.dtproj", "{808EC321-AE29-4E92-B064-D8BCC40B7CAD}"
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 2
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = TW_METER_ITEM_IMPORT\\TW_METER_ITEM_IMPORT.dtproj
+		SccLocalPath1 = .
+		SccProjectFilePathRelativizedFromConnection1 = TW_METER_ITEM_IMPORT\\
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{808EC321-AE29-4E92-B064-D8BCC40B7CAD}.Development|Default.ActiveCfg = Development
+		{808EC321-AE29-4E92-B064-D8BCC40B7CAD}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
